@@ -7,6 +7,7 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
+      transform: true, // 👈 this allows type conversion based on the TypeScript type
       forbidNonWhitelisted: true,
     }),
   );
