@@ -21,7 +21,7 @@ import { CoffeesModule } from './coffees/coffees.module';
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: true, //only for development
       }),
     }),
     CoffeesModule,
