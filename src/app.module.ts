@@ -16,7 +16,7 @@ import { CoffeesModule } from './coffees/coffees.module';
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         host: configService.get('POSTGRES_HOST'),
-        port: parseInt(configService.get('POSTGRES_PORT') ?? '5432', 10),
+        port: parseInt(configService.get('POSTGRES_PORT') ?? '5433', 10),
         username: configService.get('POSTGRES_USER'),
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
