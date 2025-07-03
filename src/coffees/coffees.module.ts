@@ -9,18 +9,18 @@ import { COFFEE_BRANDS } from './coffees.constants';
 
 //class MockCoffeesService {}
 
-@Module({
-  imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event])],
-  controllers: [CoffeesController],
-  //providers: [CoffeesService],
-  //providers: [{ provide: CoffeesService, useValue: new MockCoffeesService() }],
-  providers: [
-    CoffeesService,
-    { provide: COFFEE_BRANDS, useValue: ['buddy brew', 'nescafe'] },
-  ],
-  exports: [CoffeesService],
-})
-export class CoffeesModule {}
+// @Module({
+//   imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event])],
+//   controllers: [CoffeesController],
+//   //providers: [CoffeesService],
+//   //providers: [{ provide: CoffeesService, useValue: new MockCoffeesService() }],
+//   providers: [
+//     CoffeesService,
+//     { provide: COFFEE_BRANDS, useValue: ['buddy brew', 'nescafe'] },
+//   ],
+//   exports: [CoffeesService],
+// })
+// export class CoffeesModule {}
 
 /**    *** Class Providers ***
  
@@ -44,3 +44,28 @@ class ProductionConfigService {}
 export class CoffeesModule {}
 
  */
+
+//   *** Factory Providers ***
+
+export class CoffeeBrandsFactory {
+  create() {
+    /** .. do something ... */
+    return ['buddy brew', 'nescafe'];
+  }
+}
+@Module({
+  imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event])],
+  controllers: [CoffeesController],
+  providers: [
+    CoffeesService,
+    CoffeeBrandsFactory,
+    {
+      provide: COFFEE_BRANDS,
+      useFactory: (brandsFactory: CoffeeBrandsFactory) =>
+        brandsFactory.create(),
+      inject: [CoffeeBrandsFactory],
+    },
+  ],
+  exports: [CoffeesService],
+})
+export class CoffeesModule {}
