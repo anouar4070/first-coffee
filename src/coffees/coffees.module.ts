@@ -6,6 +6,7 @@ import { Coffee } from './entities/coffee.entity';
 import { Flavor } from './entities/flavor.entity/flavor.entity';
 import { Event } from 'src/events/entities/event.entity/event.entity';
 import { COFFEE_BRANDS } from './coffees.constants';
+import { DataSource } from 'typeorm';
 
 //class MockCoffeesService {}
 
@@ -45,11 +46,12 @@ export class CoffeesModule {}
 
  */
 
-//   *** Factory Providers ***
+/**
+ //  *** Factory Providers ***
 
 export class CoffeeBrandsFactory {
   create() {
-    /** .. do something ... */
+    /// .. do something ...
     return ['buddy brew', 'nescafe'];
   }
 }
@@ -64,6 +66,27 @@ export class CoffeeBrandsFactory {
       useFactory: (brandsFactory: CoffeeBrandsFactory) =>
         brandsFactory.create(),
       inject: [CoffeeBrandsFactory],
+    },
+  ],
+  exports: [CoffeesService],
+})
+export class CoffeesModule {}
+ */
+
+@Module({
+  imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event])],
+  controllers: [CoffeesController],
+  providers: [
+    CoffeesService,
+    {
+      provide: COFFEE_BRANDS,
+      useFactory: async (connection: DataSource): Promise<string[]> => {
+        // const coffeeBrands = await connection.query('SELECT * ...');
+        const coffeeBrands = await Promise.resolve(['buddy brew', 'nescafe']);
+        console.log('[!] Async factory');
+        return coffeeBrands;
+      },
+      inject: [DataSource],
     },
   ],
   exports: [CoffeesService],
