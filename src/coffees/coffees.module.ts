@@ -73,6 +73,7 @@ export class CoffeeBrandsFactory {
 export class CoffeesModule {}
  */
 
+//  *** Async Providers ***
 @Module({
   imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event])],
   controllers: [CoffeesController],
