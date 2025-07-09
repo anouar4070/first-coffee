@@ -8,6 +8,7 @@ import { Event } from 'src/events/entities/event.entity/event.entity';
 import { COFFEE_BRANDS } from './coffees.constants';
 import { DataSource } from 'typeorm';
 import { ConfigModule } from '@nestjs/config';
+import coffeesConfig from './config/coffees.config';
 
 //class MockCoffeesService {}
 
@@ -112,7 +113,10 @@ export class CoffeesModule {}
 // export class CoffeesModule {}
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event]), ConfigModule],
+  imports: [
+    TypeOrmModule.forFeature([Coffee, Flavor, Event]),
+    ConfigModule.forFeature(coffeesConfig),
+  ],
   controllers: [CoffeesController],
   providers: [CoffeesService],
   exports: [CoffeesService],
