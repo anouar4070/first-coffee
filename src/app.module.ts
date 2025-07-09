@@ -38,6 +38,38 @@
 
 // ***********   Method 2 ( process.env )   ***********
 
+// import { Module } from '@nestjs/common';
+// import { ConfigModule } from '@nestjs/config';
+// import { TypeOrmModule } from '@nestjs/typeorm';
+// import { AppController } from './app.controller';
+// import { AppService } from './app.service';
+// import { CoffeesModule } from './coffees/coffees.module';
+// import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
+// import { DatabaseModule } from './database/database.module';
+
+// @Module({
+//   imports: [
+//     ConfigModule.forRoot(),
+//     TypeOrmModule.forRoot({
+//       type: 'postgres',
+//       host: process.env.POSTGRES_HOST,
+//       port: +(process.env.POSTGRES_PORT ?? 5433),
+//       username: process.env.POSTGRES_USER,
+//       password: process.env.POSTGRES_PASSWORD,
+//       database: process.env.POSTGRES_DB,
+//       autoLoadEntities: true,
+//       synchronize: true, //only for development
+//     }),
+//     CoffeesModule,
+//     CoffeeRatingModule,
+//     DatabaseModule,
+//   ],
+//   controllers: [AppController],
+//   providers: [AppService],
+// })
+// export class AppModule {}
+
+// *************  Schema Validation ***************
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -46,10 +78,16 @@ import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
 import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
 import { DatabaseModule } from './database/database.module';
-
+//import Joi from '@hapi/joi';
+import * as Joi from 'joi';
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      validationSchema: Joi.object({
+        POSTGRES_HOST: Joi.required(),
+        POSTGRES_PORT: Joi.number().default(5433),
+      }),
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
