@@ -23,7 +23,7 @@ export class CoffeesService {
     //@Inject(COFFEE_BRANDS) coffeeBrands: string[],
   ) {
     const databaseHost = this.configService.get<string>(
-      'POSTGRES_HOST',
+      'database.host',
       'localhost',
     );
     console.log(databaseHost);
