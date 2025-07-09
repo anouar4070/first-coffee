@@ -50,20 +50,22 @@ import appConfig from './config/app.config';
 
 @Module({
   imports: [
+    TypeOrmModule.forRootAsync({
+      useFactory: () => ({
+        type: 'postgres',
+        host: process.env.POSTGRES_HOST,
+        port: +(process.env.POSTGRES_PORT ?? 5433),
+        username: process.env.POSTGRES_USER,
+        password: process.env.POSTGRES_PASSWORD,
+        database: process.env.POSTGRES_DB,
+        autoLoadEntities: true,
+        synchronize: true, //only for development
+      }),
+    }),
     ConfigModule.forRoot({
       load: [appConfig],
     }),
     CoffeesModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: +(process.env.POSTGRES_PORT ?? 5433),
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      autoLoadEntities: true,
-      synchronize: true, //only for development
-    }),
     CoffeeRatingModule,
     DatabaseModule,
   ],
