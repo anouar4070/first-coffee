@@ -7,6 +7,7 @@ import { Flavor } from './entities/flavor.entity/flavor.entity';
 import { Event } from 'src/events/entities/event.entity/event.entity';
 import { COFFEE_BRANDS } from './coffees.constants';
 import { DataSource } from 'typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 //class MockCoffeesService {}
 
@@ -94,17 +95,26 @@ export class CoffeesModule {}
 // })
 // export class CoffeesModule {}
 
+//****  Using scope TRANSIENT ****/
+// @Module({
+//   imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event])],
+//   controllers: [CoffeesController],
+//   providers: [
+//     CoffeesService,
+//     {
+//       provide: COFFEE_BRANDS,
+//       useFactory: () => ['buddy brew', 'nescafe'],
+//       scope: Scope.TRANSIENT,
+//     },
+//   ],
+//   exports: [CoffeesService],
+// })
+// export class CoffeesModule {}
+
 @Module({
-  imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event])],
+  imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event]), ConfigModule],
   controllers: [CoffeesController],
-  providers: [
-    CoffeesService,
-    {
-      provide: COFFEE_BRANDS,
-      useFactory: () => ['buddy brew', 'nescafe'],
-      scope: Scope.TRANSIENT,
-    },
-  ],
+  providers: [CoffeesService],
   exports: [CoffeesService],
 })
 export class CoffeesModule {}
