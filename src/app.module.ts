@@ -38,41 +38,48 @@
 
 // ***********   Method 2 ( process.env )   ***********
 
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { CoffeesModule } from './coffees/coffees.module';
-import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
-import { DatabaseModule } from './database/database.module';
-import appConfig from './config/app.config';
+// import { Module, ValidationPipe } from '@nestjs/common';
+// import { ConfigModule } from '@nestjs/config';
+// import { TypeOrmModule } from '@nestjs/typeorm';
+// import { AppController } from './app.controller';
+// import { AppService } from './app.service';
+// import { CoffeesModule } from './coffees/coffees.module';
+// import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
+// import { DatabaseModule } from './database/database.module';
+// import appConfig from './config/app.config';
+// import { APP_PIPE } from '@nestjs/core';
 
-@Module({
-  imports: [
-    TypeOrmModule.forRootAsync({
-      useFactory: () => ({
-        type: 'postgres',
-        host: process.env.POSTGRES_HOST,
-        port: +(process.env.POSTGRES_PORT ?? 5433),
-        username: process.env.POSTGRES_USER,
-        password: process.env.POSTGRES_PASSWORD,
-        database: process.env.POSTGRES_DB,
-        autoLoadEntities: true,
-        synchronize: true, //only for development
-      }),
-    }),
-    ConfigModule.forRoot({
-      load: [appConfig],
-    }),
-    CoffeesModule,
-    CoffeeRatingModule,
-    DatabaseModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
-})
-export class AppModule {}
+// @Module({
+//   imports: [
+//     TypeOrmModule.forRootAsync({
+//       useFactory: () => ({
+//         type: 'postgres',
+//         host: process.env.POSTGRES_HOST,
+//         port: +(process.env.POSTGRES_PORT ?? 5433),
+//         username: process.env.POSTGRES_USER,
+//         password: process.env.POSTGRES_PASSWORD,
+//         database: process.env.POSTGRES_DB,
+//         autoLoadEntities: true,
+//         synchronize: true, //only for development
+//       }),
+//     }),
+//     ConfigModule.forRoot({
+//       load: [appConfig],
+//     }),
+//     CoffeesModule,
+//     CoffeeRatingModule,
+//     DatabaseModule,
+//   ],
+//   controllers: [AppController],
+//   providers: [
+//     AppService,
+//     {
+//       provide: APP_PIPE,
+//       useClass: ValidationPipe,
+//     },
+//   ],
+// })
+// export class AppModule {}
 
 // *************  Schema Validation ***************
 // import { Module } from '@nestjs/common';
@@ -111,3 +118,35 @@ export class AppModule {}
 //   providers: [AppService],
 // })
 // export class AppModule {}
+
+// *************  Binding Techniques ***************
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { CoffeesModule } from './coffees/coffees.module';
+import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
+
+@Module({
+  imports: [
+    TypeOrmModule.forRootAsync({
+      useFactory: () => ({
+        type: 'postgres',
+        host: process.env.POSTGRES_HOST,
+        port: +(process.env.POSTGRES_PORT ?? 5433),
+        username: process.env.POSTGRES_USER,
+        password: process.env.POSTGRES_PASSWORD,
+        database: process.env.POSTGRES_DB,
+        autoLoadEntities: true,
+        synchronize: true, //only for development
+      }),
+    }),
+    ConfigModule.forRoot({}),
+    CoffeesModule,
+    CoffeeRatingModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
