@@ -127,6 +127,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
 import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -145,6 +146,7 @@ import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
     ConfigModule.forRoot({}),
     CoffeesModule,
     CoffeeRatingModule,
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],
