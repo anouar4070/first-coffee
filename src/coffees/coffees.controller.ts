@@ -18,6 +18,7 @@ import { UpdateCoffeeDto } from './dto/update-coffee.dto/update-coffee.dto';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 import { Public } from 'src/common/decorators/public.decorator';
 import { ParseIntPipe } from 'src/common/pipes/parse-int/parse-int.pipe';
+import { Protocol } from 'src/common/decorators/protocol.decorator';
 //import { REQUEST } from '@nestjs/core';
 
 //@UsePipes(ValidationPipe)
@@ -33,9 +34,14 @@ export class CoffeesController {
   //@UsePipes(ValidationPipe)
   @Public()
   @Get()
-  async findAll(@Query() paginationQuery: PaginationQueryDto) {
+  async findAll(
+    //@Protocol() protocol: string,
+    @Protocol('https') protocol: string,
+    @Query() paginationQuery: PaginationQueryDto,
+  ) {
     //const { limit, offset } = paginationQuery;
     //await new Promise((resolve) => setTimeout(resolve, 5000));
+    console.log(protocol);
     return this.coffeesService.findAll(paginationQuery);
     //return `This action returns all coffees. Limit: ${limit}, offset: ${offset}`;
     //http://localhost:3000/coffees?limit=20&offset=10
