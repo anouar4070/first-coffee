@@ -16,7 +16,21 @@ export class WrapResponseInterceptor implements NestInterceptor {
   }
 }
 
-/** GET http://localhost:3000/coffees/2
+/** 
+ ✅ 1. next.handle() returns an Observable
+In NestJS interceptors, the next.handle() call returns an Observable (from RxJS), not an array or a promise.
+
+The map you know from JavaScript arrays works only on arrays, not on Observables.
+
+So we need RxJS operators (like map() from rxjs/operators) to transform the data emitted by an Observable.
+
+✅ 2. Observables can emit multiple values over time
+An Observable is a stream of values, not a single value like an array.
+
+RxJS map will apply the transformation to every emitted value from the stream, not just one item.
+
+
+ * GET http://localhost:3000/coffees/2
  ==> what will be viewed on Postman response:
  {
     "data": {
