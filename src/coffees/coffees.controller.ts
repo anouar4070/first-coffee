@@ -8,8 +8,8 @@ import {
   Patch,
   Post,
   Query,
-  SetMetadata,
-  UsePipes,
+  //SetMetadata,
+  //UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
@@ -19,6 +19,7 @@ import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/paginati
 import { Public } from 'src/common/decorators/public.decorator';
 import { ParseIntPipe } from 'src/common/pipes/parse-int/parse-int.pipe';
 import { Protocol } from 'src/common/decorators/protocol.decorator';
+import { ApiForbiddenResponse, ApiResponse } from '@nestjs/swagger';
 //import { REQUEST } from '@nestjs/core';
 
 //@UsePipes(ValidationPipe)
@@ -32,6 +33,8 @@ export class CoffeesController {
   }
 
   //@UsePipes(ValidationPipe)
+  //@ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiForbiddenResponse({ description: 'Forbidden.' })
   @Public()
   @Get()
   async findAll(
