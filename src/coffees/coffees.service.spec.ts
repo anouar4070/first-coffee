@@ -8,34 +8,43 @@ import { ConfigModule } from '@nestjs/config';
 import coffeesConfig from './config/coffees.config';
 import { NotFoundException } from '@nestjs/common';
 
+// Define a type for mocking TypeORM repositories, where each method is a Jest mock
 type MockRepository<T extends ObjectLiteral> = Partial<
   Record<keyof Repository<T>, jest.Mock>
 >;
+
+// Factory function to create a mock repository with mocked methods (findOne, create)
 const createMockRepository = <
   T extends ObjectLiteral,
 >(): MockRepository<T> => ({
-  findOne: jest.fn(),
-  create: jest.fn(),
+  findOne: jest.fn(), // Mock the findOne method
+  create: jest.fn(), // Mock the create method
 });
 
 describe('CoffeesService', () => {
-  let service: CoffeesService;
-  let coffeeRepository: MockRepository<Coffee>;
+  let service: CoffeesService; // Instance of the service to be tested
+  let coffeeRepository: MockRepository<Coffee>; // Mock repository for Coffee entity
 
+  // Set up the testing module before each test
   beforeEach(async () => {
+    // Create a testing module with necessary dependencies
     const module: TestingModule = await Test.createTestingModule({
       imports: [
+        // Load configuration module with coffeesConfig to provide coffeesConfig.KEY
         ConfigModule.forRoot({
           load: [coffeesConfig], // Load the coffeesConfig
         }),
       ],
       providers: [
         CoffeesService,
+        // Mock DataSource with an empty object (minimal mock for dependency injection)
         { provide: DataSource, useValue: {} },
+        // Mock Flavor repository using the createMockRepository function
         {
           provide: getRepositoryToken(Flavor),
           useValue: createMockRepository(),
         },
+        // Mock Coffee repository using the createMockRepository function
         {
           provide: getRepositoryToken(Coffee),
           useValue: createMockRepository(),
@@ -43,7 +52,9 @@ describe('CoffeesService', () => {
       ],
     }).compile();
 
+    // Retrieve the CoffeesService instance from the module
     service = module.get<CoffeesService>(CoffeesService);
+    // Retrieve the mocked Coffee repository for use in tests
     coffeeRepository = module.get<MockRepository<Coffee>>(
       getRepositoryToken(Coffee),
     );
@@ -82,6 +93,18 @@ describe('CoffeesService', () => {
         }
       });
     });
+    /**
+      describe('otherwise', () => {
+      it('should throw the "NotFoundException"', async () => {
+        const coffeeId = '1';
+        coffeeRepository.findOne?.mockReturnValue(null);
+
+        await expect(service.findOne(coffeeId)).rejects.toThrow(
+          NotFoundException,
+        );
+      });
+    });
+     */
   });
 });
 
