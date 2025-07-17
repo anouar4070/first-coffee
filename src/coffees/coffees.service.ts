@@ -4,11 +4,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { CreateCoffeeDto } from './dto/create-coffee.dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto/update-coffee.dto';
-import { Flavor } from './entities/flavor.entity/flavor.entity';
-import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
-import { Event as CoffeeEvent } from 'src/events/entities/event.entity/event.entity';
-import { COFFEE_BRANDS } from './coffees.constants';
-import { ConfigService, ConfigType } from '@nestjs/config';
+import { Flavor } from './entities/flavor.entity';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { Event as CoffeeEvent } from '../events/entities/event.entity';
+//import { COFFEE_BRANDS } from './coffees.constants';
+//import { ConfigService, ConfigType } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
 import coffeesConfig from './config/coffees.config';
 
 //@Injectable({ scope: Scope.TRANSIENT })
