@@ -68,11 +68,18 @@ describe('CoffeesService', () => {
     describe('otherwise', () => {
       it('should throw the "NotFoundException"', async () => {
         const coffeeId = '1';
-        coffeeRepository.findOne?.mockReturnValue(null);
+        coffeeRepository.findOne?.mockReturnValue(undefined);
 
-        await expect(service.findOne(coffeeId)).rejects.toThrow(
-          NotFoundException,
-        );
+        try {
+          await service.findOne(coffeeId);
+        } catch (err: unknown) {
+          // Explicitly type err as NotFoundException
+          expect(err).toBeInstanceOf(NotFoundException);
+          if (err instanceof NotFoundException) {
+            // Type guard
+            expect(err.message).toEqual(`Coffee #${coffeeId} not found`);
+          }
+        }
       });
     });
   });
