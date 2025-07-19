@@ -18,5 +18,5 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": ["src", "ormconfig.js"]
+  "include": ["src", "test", "ormconfig.js"]
 }
