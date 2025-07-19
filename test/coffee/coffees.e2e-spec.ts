@@ -2,6 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { CoffeesModule } from '../../src/coffees/coffees.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 describe('[Feature] Coffees - /coffees', () => {
   let app: INestApplication;
@@ -12,11 +15,11 @@ describe('[Feature] Coffees - /coffees', () => {
         CoffeesModule,
         TypeOrmModule.forRoot({
           type: 'postgres',
-          host: 'localhost',
-          port: 5435,
-          username: 'postgres',
-          password: 'pass123',
-          database: 'postgres',
+          host: process.env.POSTGRES_HOST,
+          port: 5434,
+          username: process.env.POSTGRES_USER,
+          password: process.env.POSTGRES_PASSWORD,
+          database: process.env.POSTGRES_DB,
           autoLoadEntities: true,
           synchronize: true,
         }),
